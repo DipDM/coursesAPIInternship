@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+import os
+
 
 from pathlib import Path
 from decouple import config
@@ -27,7 +29,11 @@ SECRET_KEY = 'django-insecure-0ue510i4$f5o6&)2gi1@2yq!@!c%5czslg%f2fka)-uc%!+0(z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'coursesapiinternship.onrender.com', 
+]
 
 
 # Application definition
