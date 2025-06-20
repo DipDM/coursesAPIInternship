@@ -32,8 +32,6 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'https://handsoncoursefrontend.vercel.app',
-    'https://courses-frontend-next-react.vercel.app'
     'coursesapiinternship.onrender.com', 
 ]
 
