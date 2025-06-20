@@ -32,6 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    'https://handsoncoursefrontend.vercel.app',
     'coursesapiinternship.onrender.com', 
 ]
 
@@ -68,6 +69,7 @@ ROOT_URLCONF = 'config.urls'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost",
     "http://localhost:9002",
+    "https://handsoncoursefrontend.vercel.app",
     "http://localhost:3000",  # Your Next.js development server
     "https://your-nextjs-production-url.com", # Your deployed Next.js URL
     # Add any other origins that need to access your API
