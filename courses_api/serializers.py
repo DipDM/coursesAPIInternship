@@ -7,6 +7,10 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CourseInstanceSerializer(serializers.ModelSerializer):
+
+    course = CourseSerializer(read_only=True)
+    course_id = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all(), write_only=True)
+
     class Meta:
         model = CourseInstance
         fields = '__all__'
