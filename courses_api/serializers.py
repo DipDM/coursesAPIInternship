@@ -8,8 +8,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class CourseInstanceSerializer(serializers.ModelSerializer):
 
-    course = CourseSerializer(read_only=True)
-    course_id = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all(), write_only=True)
+    course = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all())
 
     class Meta:
         model = CourseInstance
