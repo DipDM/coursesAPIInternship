@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
     'courses_api', 
 ]
 
@@ -66,8 +66,8 @@ ROOT_URLCONF = 'config.urls'
 # your_project/settings.py
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost"
-    "http://localhost:9002"
+    "http://localhost",
+    "http://localhost:9002",
     "http://localhost:3000",  # Your Next.js development server
     "https://your-nextjs-production-url.com", # Your deployed Next.js URL
     # Add any other origins that need to access your API
