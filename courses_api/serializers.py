@@ -39,7 +39,7 @@ class CourseInstanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CourseInstance
-        fields = ['id', 'course_id','course_name','course_code', 'year', 'semester', 'instructor']
+        fields = ['id', 'course_id','course_name','course_code','course_description', 'year', 'semester', 'instructor']
 
     def update(self, instance, validated_data):
         validated_data.pop('course', None) 
