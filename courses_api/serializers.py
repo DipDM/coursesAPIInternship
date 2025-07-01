@@ -24,6 +24,8 @@ class CourseInstanceSerializer(serializers.ModelSerializer):
         source='course.name',
         read_only=True
     )
+    
+    semester = serializers.IntegerField(min_value=1, max_value=8)
 
     class Meta:
         model = CourseInstance

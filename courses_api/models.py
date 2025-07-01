@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 class Course(models.Model):
     code = models.CharField(max_length=10, unique=True)
@@ -13,7 +15,9 @@ class Course(models.Model):
 class CourseInstance(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='instances')
     year = models.IntegerField()
-    semester = models.CharField(max_length=10)  # Example: "Spring", "Fall"
+    semester = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(8)]
+    )
     instructor = models.CharField(max_length=100)
 
     class Meta:

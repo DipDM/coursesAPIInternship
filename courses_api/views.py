@@ -1,6 +1,9 @@
 from django.shortcuts import render
 
 # Create your views here.
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework import generics
 from .models import Course, CourseInstance
 from .serializers import CourseSerializer, CourseInstanceSerializer
@@ -39,9 +42,7 @@ class CourseInstanceCreateView(generics.ListCreateAPIView):
     queryset = CourseInstance.objects.all()
     serializer_class = CourseInstanceSerializer
 
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.views import APIView
+
 
 class CourseInstanceListView(APIView):
     def get(self, request, year, semester):
