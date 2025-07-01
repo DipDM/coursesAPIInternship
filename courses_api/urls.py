@@ -10,5 +10,5 @@ urlpatterns = [
     path('instances/<int:pk>', views.CourseInstanceUpdateView.as_view()),
     path('instances/<int:pk>', views.CourseInstanceRetrieveByIdView.as_view()),
     path('instances/<int:year>/<str:semester>', views.CourseInstanceListView.as_view()),
-    path('instances/<int:year>/<str:semester>/<int:course_id>', views.CourseInstanceDetailView.as_view(),name='instance-detail'),
+    path('instances/<int:year>/<str:semester>/<int:course_id>', views.CourseInstanceDetailView.as_view(),name='instance-detail-delete'),
 ]
