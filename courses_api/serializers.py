@@ -24,12 +24,17 @@ class CourseInstanceSerializer(serializers.ModelSerializer):
         source='course.name',
         read_only=True
     )
-    
+
+    course_code = serializers.CharField(
+        source = 'course.code',
+        read_only=True
+    )
+
     semester = serializers.IntegerField(min_value=1, max_value=8)
 
     class Meta:
         model = CourseInstance
-        fields = ['id', 'course_id','course_name'   , 'year', 'semester', 'instructor']
+        fields = ['id', 'course_id','course_name','course_code', 'year', 'semester', 'instructor']
 
     def update(self, instance, validated_data):
         validated_data.pop('course', None) 
