@@ -10,13 +10,28 @@ class CourseListCreateView(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-class CourseDetailView(generics.RetrieveDestroyAPIView):
+class CourseDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-class CourseUpdateView(generics.RetrieveUpdateAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+    def delete(self, request, *args, **kwargs):
+        course = self.get_object()
+
+        # Check if this course is a prerequisite to any other
+        if Course.objects.filter(prerequisites=course).exists():
+            return Response(
+                {"error": "Cannot delete: Course is a prerequisite for other courses."},
+                status=status.HTTP_409_CONFLICT
+            )
+
+        # Check if course has instances
+        if course.instances.exists():
+            return Response(
+                {"error": "Cannot delete: Course has existing delivery instances."},
+                status=status.HTTP_409_CONFLICT
+            )
+
+        return super().delete(request, *args, **kwargs)
 
 
 # CourseInstance Views
@@ -40,17 +55,17 @@ class CourseInstanceUpdateView(generics.RetrieveUpdateAPIView):
 
 
 class CourseInstanceDetailView(APIView):
-    def get(self, request, year, semester, pk):
+    def get(self, request, year, semester, course_id):
         try:
-            instance = CourseInstance.objects.get(pk=pk, year=year, semester=semester)
+            instance = CourseInstance.objects.get(course_id=course_id, year=year, semester=semester)
             serializer = CourseInstanceSerializer(instance)
             return Response(serializer.data)
         except CourseInstance.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def delete(self, request, year, semester, pk):
+    def delete(self, request, year, semester, course_id):
         try:
-            instance = CourseInstance.objects.get(pk=pk, year=year, semester=semester)
+            instance = CourseInstance.objects.get(course_id=course_id, year=year, semester=semester)
             instance.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except CourseInstance.DoesNotExist:
