@@ -30,6 +30,11 @@ class CourseInstanceSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    course_description = serializers.CharField(
+        source = 'course.description',
+        read_only=True
+    )
+
     semester = serializers.IntegerField(min_value=1, max_value=8)
 
     class Meta:
