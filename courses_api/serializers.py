@@ -18,12 +18,17 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class CourseInstanceSerializer(serializers.ModelSerializer):
 
-    course= serializers.PrimaryKeyRelatedField(queryset=Course.objects.all())
+    course_id = serializers.PrimaryKeyRelatedField(source='course',queryset=Course.objects.all(),label='Course')
+
+    course_name = serializers.CharField(
+        source='course.name',
+        read_only=True
+    )
 
     class Meta:
         model = CourseInstance
-        fields = '__all__'
+        fields = ['id', 'course_id','course_name'   , 'year', 'semester', 'instructor']
 
     def update(self, instance, validated_data):
-        validated_data.pop('course', None)  # Prevent changing course
+        validated_data.pop('course', None) 
         return super().update(instance, validated_data)
