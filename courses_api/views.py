@@ -21,18 +21,11 @@ class CourseDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         course = self.get_object()
 
         # Check if this course is a prerequisite to any other
-        if course.prerequisites.exists():
-            return Response(
-                {"error": "Cannot delete: Course is a prerequisite for other courses."},
-                status=status.HTTP_409_CONFLICT
-            )
-
-        # Check if course has instances
-        if course.instances.exists():
-            return Response(
-                {"error": "Cannot delete: Course has existing delivery instances."},
-                status=status.HTTP_409_CONFLICT
-            )
+       if Course.objects.filter(prerequisites=course).exists():
+        return Response(
+            {"error": "Cannot delete: Course is a prerequisite for other courses."},
+            status=status.HTTP_409_CONFLICT
+        )
 
         return super().delete(request, *args, **kwargs)
 
