@@ -21,7 +21,7 @@ class CourseDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         course = self.get_object()
 
         # Check if this course is a prerequisite to any other
-        if Course.objects.filter(prerequisites=course).exists():
+        if course.prerequisites.exists():
             return Response(
                 {"error": "Cannot delete: Course is a prerequisite for other courses."},
                 status=status.HTTP_409_CONFLICT
@@ -39,14 +39,14 @@ class CourseDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 
 # CourseInstance Views
 class CourseInstanceCreateView(generics.ListCreateAPIView):
-    queryset = CourseInstance.objects.all()
+    queryset = CourseInstance.objects.select_related('course').all()
     serializer_class = CourseInstanceSerializer
 
 
 
 class CourseInstanceListView(APIView):
     def get(self, request, year, semester):
-        instances = CourseInstance.objects.filter(year=year, semester=semester)
+        instances = CourseInstance.objects.select_related('course').filter(year=year, semester=semester)
         serializer = CourseInstanceSerializer(instances, many=True)
         return Response(serializer.data)
 
@@ -58,7 +58,7 @@ class CourseInstanceUpdateView(generics.RetrieveUpdateAPIView):
 class CourseInstanceDetailView(APIView):
     def get(self, request, year, semester, course_id):
         try:
-            instance = CourseInstance.objects.get(course_id=course_id, year=year, semester=semester)
+            instance = CourseInstance.objects.select_related('course').get(course_id=course_id, year=year, semester=semester)
             serializer = CourseInstanceSerializer(instance)
             return Response(serializer.data)
         except CourseInstance.DoesNotExist:
