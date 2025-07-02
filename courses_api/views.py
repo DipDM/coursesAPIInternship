@@ -10,11 +10,11 @@ from .serializers import CourseSerializer, CourseInstanceSerializer
 
 # Course Views
 class CourseListCreateView(generics.ListCreateAPIView):
-    queryset = Course.objects.all()
+    queryset = Course.objects.prefetch_related('prerequisites').all()
     serializer_class = CourseSerializer
 
 class CourseDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Course.objects.all()
+    queryset = Course.objects.prefetch_related('prerequisites').all()
     serializer_class = CourseSerializer
 
     def delete(self, request, *args, **kwargs):
