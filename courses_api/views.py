@@ -1,6 +1,5 @@
 from django.shortcuts import render
 
-
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
@@ -20,22 +19,18 @@ class CourseDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         course = self.get_object()
 
-        # Check if this course is a prerequisite to any other
-       if Course.objects.filter(prerequisites=course).exists():
-        return Response(
-            {"error": "Cannot delete: Course is a prerequisite for other courses."},
-            status=status.HTTP_409_CONFLICT
-        )
+        if Course.objects.filter(prerequisites=course).exists():
+            return Response(
+                {"error": "Cannot delete: Course is a prerequisite for other courses."},
+                status=status.HTTP_409_CONFLICT
+            )
 
         return super().delete(request, *args, **kwargs)
-
 
 # CourseInstance Views
 class CourseInstanceCreateView(generics.ListCreateAPIView):
     queryset = CourseInstance.objects.select_related('course').all()
     serializer_class = CourseInstanceSerializer
-
-
 
 class CourseInstanceListView(APIView):
     def get(self, request, year, semester):
@@ -47,11 +42,12 @@ class CourseInstanceUpdateView(generics.RetrieveUpdateAPIView):
     queryset = CourseInstance.objects.all()
     serializer_class = CourseInstanceSerializer
 
-
 class CourseInstanceDetailView(APIView):
     def get(self, request, year, semester, course_id):
         try:
-            instance = CourseInstance.objects.select_related('course').get(course_id=course_id, year=year, semester=semester)
+            instance = CourseInstance.objects.select_related('course').get(
+                course_id=course_id, year=year, semester=semester
+            )
             serializer = CourseInstanceSerializer(instance)
             return Response(serializer.data)
         except CourseInstance.DoesNotExist:
@@ -69,4 +65,3 @@ class CourseInstanceRetrieveByIdView(generics.RetrieveAPIView):
     queryset = CourseInstance.objects.all()
     serializer_class = CourseInstanceSerializer
     lookup_field = 'pk'
- 
